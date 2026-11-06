@@ -15,7 +15,12 @@ from decimal import Decimal
 import polars as pl
 
 from vyapaar_data.domain.corporate_actions import CorporateAction
-from vyapaar_data.domain.coverage import CoverageEntry
+from vyapaar_data.domain.coverage import (
+    CoverageEntry,
+    CoverageLedger,
+    CoverageReport,
+    InstrumentCoverage,
+)
 from vyapaar_data.domain.fundamentals import FundamentalRecord
 from vyapaar_data.ports.repositories import (
     CatalogRepository,
@@ -86,7 +91,10 @@ class VyapaarDataService:
 
     def coverage(self, instrument: str, interval: str = "1d") -> CoverageEntry | None:
         """Compute the catalog coverage window for an instrument."""
-        bars = self.catalog.read_bars(instrument)
+        try:
+            bars = self.catalog.read_bars(instrument, interval=interval)
+        except TypeError:
+            bars = self.catalog.read_bars(instrument)
         if bars.is_empty():
             return None
         ts = bars["ts"]
@@ -99,6 +107,50 @@ class VyapaarDataService:
             start=min_ts.date(),
             end=max_ts.date(),
             row_count=len(bars),
+        )
+
+    def report_coverage(
+        self,
+        instruments: Iterable[str],
+        interval: str = "1d",
+        start: date | None = None,
+        end: date | None = None,
+    ) -> CoverageReport:
+        """Evaluate coverage across a target list of instruments."""
+        items: list[InstrumentCoverage] = []
+        for inst in instruments:
+            entry = self.coverage(inst, interval=interval)
+            gaps: list[tuple[date, date]] = []
+            if entry is not None:
+                if start is not None and end is not None:
+                    ledger = CoverageLedger((entry,))
+                    gaps = ledger.gaps(inst, interval, start, end)
+                items.append(
+                    InstrumentCoverage(
+                        instrument=inst,
+                        interval=interval,
+                        entry=entry,
+                        gaps=tuple(gaps),
+                    )
+                )
+            else:
+                if start is not None and end is not None:
+                    gaps = [(start, end)]
+                items.append(
+                    InstrumentCoverage(
+                        instrument=inst,
+                        interval=interval,
+                        entry=None,
+                        gaps=tuple(gaps),
+                    )
+                )
+        root_path = str(getattr(self.catalog, "root", "unknown"))
+        return CoverageReport(
+            catalog_root=root_path,
+            interval=interval,
+            target_start=start,
+            target_end=end,
+            instruments=tuple(items),
         )
 
 

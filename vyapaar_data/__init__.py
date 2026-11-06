@@ -25,9 +25,19 @@ from vyapaar_data.domain.corporate_actions import (
     from_record,
     to_record,
 )
-from vyapaar_data.domain.coverage import CoverageEntry, CoverageLedger
+from vyapaar_data.domain.coverage import (
+    CoverageEntry,
+    CoverageLedger,
+    CoverageReport,
+    InstrumentCoverage,
+)
 from vyapaar_data.domain.fundamentals import FundamentalRecord
-from vyapaar_data.providers.bhavcopy import BhavcopyRow, parse_bhavcopy, read_bhavcopy, rows_to_bars
+from vyapaar_data.providers.bhavcopy import (
+    BhavcopyRow,
+    parse_bhavcopy,
+    read_bhavcopy,
+    rows_to_bars,
+)
 from vyapaar_data.service.data_service import VyapaarDataService
 
 __version__ = "0.1.0"
@@ -41,10 +51,12 @@ __all__ = [
     "CorporateActionType",
     "CoverageEntry",
     "CoverageLedger",
+    "CoverageReport",
     "Dividend",
     "DuckDbCorporateActionsStore",
     "DuckDbFundamentalsStore",
     "FundamentalRecord",
+    "InstrumentCoverage",
     "ParquetCatalog",
     "Rights",
     "Split",

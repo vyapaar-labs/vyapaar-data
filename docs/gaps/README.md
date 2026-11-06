@@ -27,9 +27,9 @@ cause lives here.
 
 | # | Title | Area |
 |---|-------|------|
-| [0001](0001-catalog-coverage-unverified-for-downstream-consumers.md) | Parquet catalog's real-data coverage is unverified for downstream consumers (`vyapaar-runtime`'s `/bars` endpoint, `vyapaar-ui-web`'s Risk tab/sparklines) | `vyapaar_data` (catalog) |
 
 ## Closed gaps
 
 | # | Title | Area |
 |---|-------|------|
+| 0001 | Parquet catalog coverage verified for downstream consumers (`vyapaar-runtime`'s `/bars` endpoint, `vyapaar-ui-web`'s Risk tab/sparklines) | `vyapaar_data` (catalog) |

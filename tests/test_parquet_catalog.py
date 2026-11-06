@@ -10,7 +10,7 @@ import pyarrow as pa
 import pyarrow.parquet as pq
 import pytest
 
-from vyapaar_data.adapters.parquet_catalog import arrow_schema
+from vyapaar_data.adapters.parquet_catalog import ParquetCatalog, arrow_schema
 
 
 def test_write_and_read_preserves_exact_decimals(catalog, sample_bars) -> None:
@@ -75,3 +75,33 @@ def test_timestamps_are_utc_microsecond(catalog, sample_bars) -> None:
     first = bars.sort("ts")["ts"][0]
     assert isinstance(first, datetime)
     assert first == datetime(2023, 12, 28)
+
+
+def test_reads_runtime_catalog_layout(tmp_path) -> None:
+    catalog_root = tmp_path / "runtime_catalog"
+    target_dir = catalog_root / "catalog" / "1D" / "NSE" / "TCS"
+    target_dir.mkdir(parents=True, exist_ok=True)
+
+    # Write a fixture file with int64 timestamp and float prices as in runtime
+    table = pa.Table.from_arrays(
+        [
+            pa.array([1704080700000000000, 1704167100000000000], type=pa.int64()),
+            pa.array([3800.5, 3810.0], type=pa.float64()),
+            pa.array([3850.0, 3860.0], type=pa.float64()),
+            pa.array([3790.0, 3800.0], type=pa.float64()),
+            pa.array([3840.25, 3855.5], type=pa.float64()),
+            pa.array([1200000, 1500000], type=pa.int64()),
+        ],
+        names=["ts", "open", "high", "low", "close", "volume"],
+    )
+    pq.write_table(table, target_dir / "2024.parquet")
+
+    cat = ParquetCatalog(catalog_root)
+    bars = cat.read_bars("NSE:TCS-EQ")
+    assert bars.height == 2
+    assert bars["close"].to_list() == [Decimal("3840.2500"), Decimal("3855.5000")]
+    assert isinstance(bars["ts"][0], datetime)
+
+    # Read using dot notation
+    dot_bars = cat.read_bars("TCS.NSE")
+    assert dot_bars.height == 2

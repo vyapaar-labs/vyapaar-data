@@ -10,7 +10,6 @@ readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "MIT" }
 dependencies = [
-    "vyapaar>=0.1.0",
     "duckdb>=1.0.0",
     "polars>=1.0.0",
     "pyarrow>=15.0.0",
@@ -18,11 +17,17 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+native = [
+    "vyapaar>=0.1.0",
+]
 dev = [
     "pytest>=8.0.0",
     "ruff>=0.4.0",
     "mypy>=1.8.0",
 ]
+
+[project.scripts]
+vyapaar-coverage = "vyapaar_data.cli.coverage:main"
 
 [tool.setuptools.packages.find]
 include = ["vyapaar_data*"]
