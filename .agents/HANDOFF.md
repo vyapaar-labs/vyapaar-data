@@ -31,6 +31,10 @@
 ## Immediate Next Step
 * Tier 6B: `vyapaar-adapters` (broker ACL SDK with entry points and
   paper/mock harness).
+* `docs/gaps/0001`: two downstream consumers (`vyapaar-runtime`'s `GET /bars/{id}`,
+  `vyapaar-ui-web`'s Phase C4 Risk tab) need this repo's Parquet catalog actually populated for
+  their instruments — unverified. Run the coverage-ledger report against those instruments
+  against a real deployment's catalog directory to close it.
 
 ## Operating Invariants
 * Zero floats: `decimal.Decimal` + `DECIMAL128(18,4)` everywhere in financial
