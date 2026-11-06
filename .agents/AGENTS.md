@@ -20,7 +20,7 @@
 ## 2. Coding Guidelines (DDD & TDD)
 * **Zero Floats Policy**: Decimals for adjusted dividend payouts, ratio splits, and strike steps.
 * **TDD & Parallel Test Directory Rule (MANDATORY)**:
-  - Tests reside in `tests/` parallel to `src/`.
+  - Tests reside in `tests/` parallel to `src/`, or in a `src/tests/` module directory.
 
 ---
 
