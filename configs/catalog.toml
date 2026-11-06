@@ -1,0 +1,18 @@
+# vyapaar-data catalog configuration template
+# Copy to `catalog.toml` and adjust paths before running ingestion jobs.
+
+[storage]
+# Root directory of the Hive-partitioned Parquet catalog.
+catalog_root = "data/catalog"
+
+[duckdb]
+# Path to the DuckDB point-in-time store (":memory:" for ephemeral usage).
+path = "data/lakehouse.duckdb"
+
+[coverage]
+interval = "1d"
+
+[bhavcopy]
+# Base URL pattern for NSE bhavcopy files (y = year, m = month, d = day).
+url_pattern = "https://nsearchives.nseindia.com/products/content/sec_bhavdata_full_{y}{m}{d}.csv"
+instrument_prefix = "NSE:"
