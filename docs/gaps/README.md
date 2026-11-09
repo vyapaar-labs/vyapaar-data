@@ -26,10 +26,11 @@ cause lives here.
 ## Open gaps
 
 | # | Title | Area |
-|---|-------|------|
 
 ## Closed gaps
 
 | # | Title | Area |
 |---|-------|------|
 | 0001 | Parquet catalog coverage verified for downstream consumers (`vyapaar-runtime`'s `/bars` endpoint, `vyapaar-ui-web`'s Risk tab/sparklines) | `vyapaar_data` (catalog) |
+| 0002 | Macro series ingestion stub (`PythonMacroReader` returns empty) | `vyapaar_data.service.macro_reader` | Closed in `c08710d` (macro series ingestion behind `PythonMacroReader`) |
+| 0003 | Filings ingestion & expanded economic series breadth | `vyapaar-data` (macro + filings) | Closed in `c08710d` (filings ingestion behind `FilingsReader`/`LakehouseFilingsReader`) |

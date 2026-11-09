@@ -7,9 +7,17 @@ from datetime import UTC, date, datetime, time
 import polars as pl
 import pytest
 
-from vyapaar_data import DuckDbCorporateActionsStore, DuckDbFundamentalsStore, ParquetCatalog
+from vyapaar_data import (
+    DuckDbCorporateActionsStore,
+    DuckDbFilingsStore,
+    DuckDbFundamentalsStore,
+    DuckDbMacroStore,
+    ParquetCatalog,
+)
 from vyapaar_data.domain.corporate_actions import Dividend, Split
+from vyapaar_data.domain.filings import Filing, FilingType
 from vyapaar_data.domain.fundamentals import FundamentalRecord
+from vyapaar_data.domain.macro import MacroObservation
 
 
 def utc(y: int, m: int, d: int, hour: int = 0) -> datetime:
@@ -80,4 +88,65 @@ def sample_actions() -> list[object]:
     return [
         Split(instrument="NSE:RELIANCE-EQ", ex_date=date(2024, 1, 2), old_shares=1, new_shares=2),
         Dividend(instrument="NSE:RELIANCE-EQ", ex_date=date(2024, 1, 3), per_share="10.00"),
+    ]
+
+
+@pytest.fixture
+def macro_store() -> DuckDbMacroStore:
+    return DuckDbMacroStore(":memory:")
+
+
+@pytest.fixture
+def filings_store() -> DuckDbFilingsStore:
+    return DuckDbFilingsStore(":memory:")
+
+
+@pytest.fixture
+def sample_macro_rows() -> list[MacroObservation]:
+    return [
+        MacroObservation(
+            series_id="RBI_REPO_RATE",
+            as_of_date=date(2024, 1, 1),
+            value="6.50",
+            source="rbi",
+        ),
+        MacroObservation(
+            series_id="RBI_REPO_RATE",
+            as_of_date=date(2024, 2, 1),
+            value="6.75",
+            source="rbi",
+        ),
+        MacroObservation(
+            series_id="WPI_INFLATION",
+            as_of_date=date(2024, 1, 15),
+            value="0.70",
+            source="eaindustry.nic.in",
+        ),
+    ]
+
+
+@pytest.fixture
+def sample_filings() -> list[Filing]:
+    return [
+        Filing(
+            instrument="NSE:RELIANCE-EQ",
+            filing_date=date(2024, 1, 20),
+            filing_type=FilingType.QUARTERLY_RESULT,
+            title="Q3 FY24 Results",
+            source_url="https://example.com/reliance-q3",
+        ),
+        Filing(
+            instrument="NSE:RELIANCE-EQ",
+            filing_date=date(2024, 2, 10),
+            filing_type=FilingType.SHAREHOLDING,
+            title="Shareholding Pattern Dec 2023",
+            source_url="https://example.com/reliance-sh",
+        ),
+        Filing(
+            instrument="NSE:TCS-EQ",
+            filing_date=date(2024, 1, 15),
+            filing_type=FilingType.QUARTERLY_RESULT,
+            title="Q3 FY24 Results",
+            source_url="https://example.com/tcs-q3",
+        ),
     ]

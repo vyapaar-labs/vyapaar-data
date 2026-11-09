@@ -31,6 +31,37 @@
 * NSE cash equity bhavcopies (`sec_bhavdata_full_*.csv`) do not contain benchmark index levels
   (`NIFTY 50`), which live in separate index bhavcopies (`ind_close_all_*.csv`).
 
+## What was implemented (plan 0001)
+- **Analytical data-feed ports** (`vyapaar_data/ports/data_feeds.py`): `MarketReader`
+  (`get_quote`, `get_candles`, `get_returns`, `get_indicators`), `ScreenerReader`
+  (`execute_screen`), `MacroReader` (`get_series`), `ReferenceExporter` (`export`/`resolve`
+  emitting `$vyapaar/ref/<uuid>` URIs), plus screener domain types
+  (`ScreenQuery`, `ScreenCondition`, `ComparisonOp`).
+- **Implementations** (`vyapaar_data/service/`): `LakehouseMarketReader` backed by the
+  Parquet catalog + `VyapaarDataService`; `VectorizedScreener` (gt/lt/gte/lte/eq and
+  crosses_above/crosses_below vs literal or field, order_by + limit);
+  `InMemoryReferenceExporter`; `PythonMacroReader` (empty canonical frame — stub,
+  see open gap 0002).
+- **Tests**: 16 new tests in `tests/test_data_feeds.py`; full suite `pytest -q`: 45 passed,
+  0 failed; `ruff check` + `ruff format --check` clean.
+
+## What was implemented (plan 0002 / gaps 0002 & 0003)
+- **Macro series ingestion** (gap 0002 closed): `MacroObservation` domain value object
+  (`vyapaar_data/domain/macro.py`); `MacroRow`/`parse_macro` CSV provider
+  (`vyapaar_data/providers/macro.py`); `MacroSeriesRepository` port +
+  `DuckDbMacroStore` adapter (`vyapaar_data/adapters/macro_store.py`);
+  `PythonMacroReader.get_series` now reads from the repository with as-of semantics and
+  returns exact `Decimal(18,4)` Polars frames (`vyapaar_data/service/macro_reader.py`).
+- **Filings ingestion** (gap 0003 closed): `Filing`/`FilingType` domain value objects
+  (`vyapaar_data/domain/filings.py`); `FilingRow`/`parse_filings` CSV provider
+  (`vyapaar_data/providers/filings.py`); `FilingsRepository` port +
+  `DuckDbFilingsStore` adapter (`vyapaar_data/adapters/filings_store.py`);
+  `FilingsReader` port + `LakehouseFilingsReader` service
+  (`vyapaar_data/service/filings_reader.py`).
+- **Tests**: 18 new tests (`tests/test_macro.py` 9, `tests/test_filings.py` 9).
+- Full suite `pytest -q`: **63 passed, 0 failed**; `ruff check` + `ruff format --check`
+  clean. Both gap docs moved to Closed Gaps; plan 0002 moved to Implemented Plans.
+
 ## Immediate Next Step
 * `vyapaar-ui-web`: Proceed with gap 0011 (wire sparklines to `GET /bars/{id}`) against verified
   catalog data; for plan 0007 / gap 0024 (Risk tab), either use option (b) local equity curve or

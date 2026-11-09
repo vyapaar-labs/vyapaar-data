@@ -12,7 +12,9 @@ from vyapaar_data.domain.corporate_actions import (
     to_record,
 )
 from vyapaar_data.domain.coverage import CoverageEntry, CoverageLedger
+from vyapaar_data.domain.filings import Filing, FilingType
 from vyapaar_data.domain.fundamentals import FundamentalRecord
+from vyapaar_data.domain.macro import MacroObservation
 
 __all__ = [
     "Bonus",
@@ -22,7 +24,10 @@ __all__ = [
     "CoverageEntry",
     "CoverageLedger",
     "Dividend",
+    "Filing",
+    "FilingType",
     "FundamentalRecord",
+    "MacroObservation",
     "Rights",
     "Split",
     "from_record",

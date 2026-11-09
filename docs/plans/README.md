@@ -7,12 +7,9 @@ Per workspace rule `.agents/rules/gap-tracking.md`:
 
 ## Active Plans
 
-| # | Title | Target Scope | Status |
-|---|-------|--------------|--------|
-| [0001](0001-mcp-market-and-screener-data-feed-ports.md) | Lakehouse & Port Architecture for MCP Quantitative Tools and Screening | `vyapaar-data` | Ready for implementation |
-| [0002](0002-filings-and-econ-series-breadth.md) | Filings Ingestion, Economic Series Breadth | `vyapaar-data` | Deferred (gated on concrete consumer) |
-
 ## Implemented Plans
 
 | # | Title | Target Scope | Implemented In |
 |---|-------|--------------|----------------|
+| 0001 | Lakehouse & Port Architecture for MCP Quantitative Tools and Screening | `vyapaar-data` | `MarketReader`, `ScreenerReader`, `MacroReader`, `ReferenceExporter` read ports in `vyapaar_data/ports/data_feeds.py`; `LakehouseMarketReader`, `VectorizedScreener`, `InMemoryReferenceExporter`, `PythonMacroReader` in `vyapaar_data/service/`; screener domain types (`ScreenQuery`, `ScreenCondition`, `ComparisonOp`); 16 tests in `tests/test_data_feeds.py`. |
+| 0002 | Filings Ingestion, Economic Series Breadth | `vyapaar-data` | Macro series ingestion: `MacroObservation` domain, `DuckDbMacroStore`, `MacroSeriesRepository` port, `PythonMacroReader.get_series` (`tests/test_macro.py`); filings ingestion: `Filing`/`FilingType` domain, `DuckDbFilingsStore`, `FilingsRepository`/`FilingsReader` ports, `LakehouseFilingsReader` (`tests/test_filings.py`). Both gaps 0002 and 0003 closed. 18 new tests total. |

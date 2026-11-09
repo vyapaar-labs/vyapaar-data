@@ -13,7 +13,9 @@ from typing import Protocol, runtime_checkable
 import polars as pl
 
 from vyapaar_data.domain.corporate_actions import CorporateAction
+from vyapaar_data.domain.filings import Filing
 from vyapaar_data.domain.fundamentals import FundamentalRecord
+from vyapaar_data.domain.macro import MacroObservation
 
 # Canonical bar schema for the Parquet catalog. All financial columns are
 # fixed-point decimals; ``ts`` is microsecond-resolution UTC.
@@ -75,6 +77,43 @@ class CatalogRepository(Protocol):
         end: date | None = None,
     ) -> pl.DataFrame:
         """Read bars sorted by timestamp, optionally filtered to a window."""
+        ...
+
+
+@runtime_checkable
+class MacroSeriesRepository(Protocol):
+    """Storage for macroeconomic series observations."""
+
+    def upsert(self, observation: MacroObservation) -> None:
+        """Persist an observation idempotently (same series_id+as_of_date)."""
+        ...
+
+    def query(
+        self,
+        series_id: str,
+        start_date: date | None = None,
+        end_date: date | None = None,
+    ) -> list[MacroObservation]:
+        """Return observations for ``series_id`` within ``[start_date, end_date]``."""
+        ...
+
+
+@runtime_checkable
+class FilingsRepository(Protocol):
+    """Storage for regulatory filings records."""
+
+    def upsert(self, filing: Filing) -> None:
+        """Persist a filing idempotently (same instrument+filing_date+title)."""
+        ...
+
+    def query(
+        self,
+        instrument: str | None = None,
+        start_date: date | None = None,
+        end_date: date | None = None,
+        filing_type: str | None = None,
+    ) -> list[Filing]:
+        """Return filings, optionally filtered by instrument/date/type."""
         ...
 
 
