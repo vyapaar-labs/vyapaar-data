@@ -26,6 +26,9 @@ cause lives here.
 ## Open gaps
 
 | # | Title | Area |
+|---|-------|------|
+| 0001 | Economic/earnings/dividends/splits/IPO calendar ingestion | `vyapaar_data` (calendar) |
+| 0002 | Company fundamentals / symbol profile ingestion | `vyapaar_data` (reference) |
 
 ## Closed gaps
 
