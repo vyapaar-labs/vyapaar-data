@@ -15,6 +15,9 @@
   * `service/`: `VyapaarDataService.adjusted_history()`, `coverage()`, `report_coverage()`.
   * `cli/`: `python -m vyapaar_data.cli` coverage reporting tool (`vyapaar-coverage`).
 * Zone 3 configs: `configs/catalog.toml`. CI: `.github/workflows/ci.yml`.
+- `docs/migration-guide.md` decimated: historical migration map moved to
+  `docs/design/code-migration-map.md`; verification commands moved to
+  `docs/roadmap/migration-verification.md`; original `migration-guide.md` removed.
 * **Gap 0001 (CLOSED)**: Ran coverage-ledger reporting for `vyapaar-ui-web` instruments. Confirmed
   equity coverage (2014–2026, >3,150 bars each) in the deployed lakehouse catalog (`RELIANCE`,
   `TCS`, `HDFCBANK`, `INFY`, `ICICIBANK`), unblocking gap 0011 sparklines. Identified that benchmark
