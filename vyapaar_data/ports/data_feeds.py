@@ -23,6 +23,8 @@ from typing import Protocol, runtime_checkable
 
 import polars as pl
 
+from vyapaar_data.domain.calendar import CalendarEvent
+from vyapaar_data.domain.profile import SymbolProfile
 from vyapaar_data.ports.repositories import BAR_SCHEMA, CatalogRepository
 
 
@@ -173,17 +175,57 @@ class ReferenceExporter(Protocol):
         ...
 
 
+@runtime_checkable
+class CalendarReader(Protocol):
+    """Read scheduled calendar events (economic / earnings / dividends / splits /
+    IPO) from the lakehouse."""
+
+    def get_calendar(
+        self,
+        from_date: date | None = None,
+        to_date: date | None = None,
+        category: str | None = None,
+    ) -> pl.DataFrame:
+        """Calendar events over ``[from_date, to_date]``, optionally
+        category-filtered (``Economic`` / ``Earnings`` / ``Dividends`` /
+        ``Splits`` / ``IPO``). Returns an exact-``Decimal`` Polars frame."""
+        ...
+
+
+@runtime_checkable
+class ProfileReader(Protocol):
+    """Read company symbol profiles from the lakehouse."""
+
+    def get_profile(self, symbol: str) -> SymbolProfile | None:
+        """Symbol profile for ``symbol`` (``None`` when unknown)."""
+        ...
+
+    def get_profiles(
+        self,
+        symbols: list[str] | None = None,
+        sector: str | None = None,
+        industry: str | None = None,
+    ) -> list[SymbolProfile]:
+        """Symbol profiles, optionally filtered by symbol list / sector /
+        industry."""
+        ...
+
+
 __all__ = [
     "BAR_SCHEMA",
+    "CalendarEvent",
+    "CalendarReader",
     "CatalogRepository",
     "ComparisonOp",
     "FilingsReader",
     "MacroReader",
     "MarketReader",
+    "ProfileReader",
     "ReferenceExporter",
     "ScreenCondition",
     "ScreenQuery",
     "ScreenResult",
     "ScreenValue",
     "ScreenerReader",
+    "SymbolProfile",
 ]

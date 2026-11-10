@@ -12,10 +12,12 @@ from typing import Protocol, runtime_checkable
 
 import polars as pl
 
+from vyapaar_data.domain.calendar import CalendarEvent
 from vyapaar_data.domain.corporate_actions import CorporateAction
 from vyapaar_data.domain.filings import Filing
 from vyapaar_data.domain.fundamentals import FundamentalRecord
 from vyapaar_data.domain.macro import MacroObservation
+from vyapaar_data.domain.profile import SymbolProfile
 
 # Canonical bar schema for the Parquet catalog. All financial columns are
 # fixed-point decimals; ``ts`` is microsecond-resolution UTC.
@@ -118,6 +120,44 @@ class FilingsRepository(Protocol):
 
 
 @runtime_checkable
+class CalendarRepository(Protocol):
+    """Storage for scheduled calendar events (economic / earnings / dividends /
+    splits / IPO)."""
+
+    def upsert(self, event: CalendarEvent) -> None:
+        """Persist a calendar event idempotently (same instrument+scheduled_at+event_name)."""
+        ...
+
+    def query(
+        self,
+        instrument: str | None = None,
+        category: str | None = None,
+        start_date: date | None = None,
+        end_date: date | None = None,
+    ) -> list[CalendarEvent]:
+        """Return calendar events, optionally filtered by instrument/category/date window."""
+        ...
+
+
+@runtime_checkable
+class ProfileRepository(Protocol):
+    """Storage for company symbol profiles."""
+
+    def upsert(self, profile: SymbolProfile) -> None:
+        """Persist a symbol profile idempotently (same symbol)."""
+        ...
+
+    def query(
+        self,
+        symbol: str | None = None,
+        sector: str | None = None,
+        industry: str | None = None,
+    ) -> list[SymbolProfile]:
+        """Return symbol profiles, optionally filtered by symbol/sector/industry."""
+        ...
+
+
+@runtime_checkable
 class DataService(Protocol):
     """Unified, look-ahead-bias-free data facade."""
 
@@ -129,3 +169,15 @@ class DataService(Protocol):
     ) -> pl.DataFrame:
         """Raw history restated to the current corporate-action basis."""
         ...
+
+
+__all__ = [
+    "CalendarRepository",
+    "CatalogRepository",
+    "CorporateActionsRepository",
+    "DataService",
+    "FilingsRepository",
+    "FundamentalsRepository",
+    "MacroSeriesRepository",
+    "ProfileRepository",
+]

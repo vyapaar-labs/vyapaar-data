@@ -33,15 +33,34 @@
   prices into canonical `DECIMAL(18, 4)`.
 * NSE cash equity bhavcopies (`sec_bhavdata_full_*.csv`) do not contain benchmark index levels
   (`NIFTY 50`), which live in separate index bhavcopies (`ind_close_all_*.csv`).
-* **Gaps 0001 + 0002 remain OPEN and are NOT implementable yet.** Both gap docs
-  (`docs/gaps/0001-economic-calendar-ingestion.md`, `docs/gaps/0002-company-fundamentals-symbol-profile.md`)
-  explicitly state that an external data source/vendor decision has **not** been made, that no vendor
-  name may be invented or assumed, and that no code should be written against them — they are
-  documentation-only decision-point records. Verified against the repo: no `CalendarReader` /
-  `ProfileReader` port, no calendar or symbol-profile domain, and no Parquet catalog entry exists for
-  either category. They remain prerequisites for `vyapaar-runtime` plan 0003 Phase 3
-  (`/market-data/calendar`, `/market-data/symbol-profile/:id`) and are unblocked only by a vendor
-  decision.
+* **Gap 0001 (calendar) implemented with stubbed data** — `CalendarEvent` domain,
+  `CalendarRepository`/`CalendarReader` ports, `DuckDbCalendarStore` adapter,
+  `LakehouseCalendarReader` service, stubbed CSV provider (`stubbed_calendar_rows`).
+  Stubbed data is a stopgap pending an external vendor decision — tracked by
+  `docs/gaps/0003-calendar-stubbed-data.md`. Tests in `tests/test_calendar.py`.
+* **Gap 0002 (symbol profile) implemented with yfinance** — `SymbolProfile` domain,
+  `ProfileRepository`/`ProfileReader` ports, `DuckDbProfileStore` adapter,
+  `LakehouseProfileReader` service, yfinance provider (`fetch_symbol_profiles`,
+  degrades gracefully when yfinance is absent). Tests in `tests/test_profile.py`.
+
+## What was implemented (gaps 0001 & 0002)
+- **Calendar ingestion** (gap 0001): `CalendarEvent` domain value object
+  (`vyapaar_data/domain/calendar.py`); `CalendarRow`/`parse_calendar` CSV provider
+  (`vyapaar_data/providers/calendar.py`); `CalendarRepository` port +
+  `DuckDbCalendarStore` adapter (`vyapaar_data/adapters/duckdb_store.py`);
+  `CalendarReader` port + `LakehouseCalendarReader` service
+  (`vyapaar_data/service/calendar_reader.py`). Data is stubbed/hardcoded pending
+  an external vendor decision (see docs/gaps/0003-calendar-stubbed-data.md).
+- **Symbol profile ingestion** (gap 0002): `SymbolProfile` domain value object
+  (`vyapaar_data/domain/profile.py`); `ProfileRow`/`fetch_symbol_profiles` yfinance
+  provider (`vyapaar_data/providers/profile.py`); `ProfileRepository` port +
+  `DuckDbProfileStore` adapter (`vyapaar_data/adapters/duckdb_store.py`);
+  `ProfileReader` port + `LakehouseProfileReader` service
+  (`vyapaar_data/service/profile_reader.py`). yfinance is optional; degrades
+  gracefully when absent.
+- **Tests**: 18 new tests (`tests/test_calendar.py` 10, `tests/test_profile.py` 8).
+- Full suite `pytest -q`: **100 passed, 0 failed**; `ruff check` + `ruff format --check`
+  clean; `mypy` clean on new files.
 
 ## What was implemented (plan 0001)
 - **Analytical data-feed ports** (`vyapaar_data/ports/data_feeds.py`): `MarketReader`
