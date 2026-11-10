@@ -30,6 +30,7 @@ cause lives here.
 | 0001 | Economic/earnings/dividends/splits/IPO calendar ingestion | `vyapaar_data` (calendar) |
 | 0002 | Company fundamentals / symbol profile ingestion | `vyapaar_data` (reference) |
 | 0003 | Calendar data stubbed pending external source decision | `vyapaar_data` (calendar) |
+| [0004](0004-catalog-seeded-from-honba-kao-ad-hoc-copy.md) | `data/catalog/` NSE daily bars seeded via ad-hoc copy from honba-kao, not vyapaar-data's own ingestion pipeline | `data/catalog/1D`, `data/catalog/5M` |
 
 ## Closed gaps
 
