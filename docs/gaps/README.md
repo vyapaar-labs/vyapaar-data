@@ -31,6 +31,7 @@ cause lives here.
 | 0002 | Company fundamentals / symbol profile ingestion | `vyapaar_data` (reference) |
 | 0003 | Calendar data stubbed pending external source decision | `vyapaar_data` (calendar) |
 | [0004](0004-catalog-seeded-from-honba-kao-ad-hoc-copy.md) | `data/catalog/` NSE daily bars seeded via ad-hoc copy from honba-kao, not vyapaar-data's own ingestion pipeline | `data/catalog/1D`, `data/catalog/5M` |
+| [0005](0005-block-bulk-deal-disclosure-ingestion.md) | Block & bulk deal disclosure ingestion — no data source, port, or reader exists | `vyapaar_data` (reference) |
 
 ## Closed gaps
 
