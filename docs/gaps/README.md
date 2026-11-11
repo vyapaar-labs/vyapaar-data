@@ -34,6 +34,8 @@ cause lives here.
 | [0005](0005-block-bulk-deal-disclosure-ingestion.md) | Block & bulk deal disclosure ingestion — no data source, port, or reader exists | `vyapaar_data` (reference) |
 | [0006](0006-news-ingestion.md) | News article ingestion — no data source, port, or reader exists (blocks chat `news_search` tool) | `vyapaar_data` (reference) |
 | [0007](0007-filings-rust-bridge.md) | Filings data is Python-side only — no `vyapaar-data` → Rust consumer bridge (blocks chat `filings_search` tool) | `vyapaar_data` (filings) |
+| [0008](0008-corporate-actions-rust-bridge.md) | Corporate-actions data is Python-side only — no `vyapaar-data` → Rust consumer bridge (blocks chat `corporate_actions` tool) | `vyapaar_data` (corporate actions) |
+| [0009](0009-corporate-actions-ingestion.md) | Corporate-actions DuckDB store has no automatic ingestion — population is manual/test-seeded today | `vyapaar_data` (corporate actions) |
 
 ## Closed gaps
 
