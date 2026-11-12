@@ -3,7 +3,7 @@
 Verification commands for the `honba-data → vyapaar-data` migration:
 
 ```bash
-cd /home/pmallapp/Devel/Finance/vyapaar-labs/vyapaar-data
+# Run from the repository root
 pytest -q
 ruff check .
 ```

@@ -7,7 +7,7 @@
 `data/catalog/1D/NSE/` and `data/catalog/5M/NSE/` (120 NSE symbols, per-year `.parquet` daily
 bars under `1D`, plus a thin `5M` tree) were populated by directly copying files from the
 sibling `honba-kao` project's own data directory
-(`/home/pmallapp/Devel/Finance/honba-workspace/honba-data/data/catalog`), not through any
+(`honba-workspace/honba-data/data/catalog`), not through any
 adapter, provider, or ingestion command in `vyapaar_data/`. Before this copy, `data/catalog/`
 was empty — `vyapaar-runtime-api-rest`'s `GET /instruments`/`/quotes`/`/bars/{id}` had no data to
 serve at all when pointed at this repo's own `data/` directory.
