@@ -2,7 +2,7 @@
 LakehouseCalendarReader service.
 
 Calendar data is stubbed/hardcoded while an external calendar data
-source/vendor decision remains pending (see docs/gaps/0003-calendar-stubbed-data.md).
+source/vendor decision remains pending (see docs/gaps/0012-calendar-stubbed-data.md).
 """
 
 from __future__ import annotations

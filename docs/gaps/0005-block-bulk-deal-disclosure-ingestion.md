@@ -23,7 +23,7 @@ this repo to be the actual data source, per this workspace's gap-tracking rule
 (`.agents/rules/gap-tracking.md` §5): a stub's root cause gets filed in the provider repo, not
 silently stubbed in the consumer.
 
-Unlike `docs/gaps/0001-economic-calendar-ingestion.md` (which needs a paid vendor decision),
+Unlike `docs/gaps/0010-economic-calendar-ingestion.md` (which needs a paid vendor decision),
 block/bulk deal disclosures are public exchange data — NSE and BSE both publish them as part of
 their routine daily surveillance disclosures, with no vendor licensing involved. The open decision
 here is narrower: which exchange(s) to ingest from first, the exact disclosure file/feed shape

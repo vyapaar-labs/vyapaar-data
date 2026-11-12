@@ -15,7 +15,7 @@ Population today is manual/test-seeded, and the coverage CLI instantiates the
 store in-memory (`vyapaar_data/cli/coverage.py` line ~33), so real-world
 historical coverage is effectively empty.
 
-This is distinct from [0001](0001-economic-calendar-ingestion.md) (the
+This is distinct from [0010](0010-economic-calendar-ingestion.md) (the
 *scheduled/forward* calendar — upcoming dividends/splits/IPOs as dated events,
 blocked on a vendor decision): this gap is about *realized, historical* actions
 with ex-dates, ratios, and amounts — public exchange/announcement data, no vendor

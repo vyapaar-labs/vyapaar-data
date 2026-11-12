@@ -23,10 +23,10 @@ _VALID_CATEGORIES = ("Economic", "Earnings", "Dividends", "Splits", "IPO")
 _VALID_IMPACT_LEVELS = ("High", "Medium", "Low")
 
 # Stubbed calendar rows. These are illustrative values reverse-engineered
-# from the shape described in docs/gaps/0001-economic-calendar-ingestion.md
+# from the shape described in docs/gaps/0010-economic-calendar-ingestion.md
 # (observed against vela.luxalgo.com's calendar tab on 2026-11-09). No real
 # vendor data is asserted here: this is placeholder data to be replaced once a
-# concrete calendar data source is selected (see docs/gaps/0003-*.md).
+# concrete calendar data source is selected (see docs/gaps/0012-*.md).
 _STUBBED_ROWS: list[dict[str, str | None]] = [
     {
         "instrument": "NSE:RELIANCE-EQ",

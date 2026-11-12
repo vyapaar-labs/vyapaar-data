@@ -2,6 +2,17 @@
 
 ## Phase / Slice Status
 * **Tier 6A (COMPLETE)**: Implemented Point-in-Time Financial Lakehouse bounded context.
+* **Docs overhaul (2026-11-12)**: the historical `docs/roadmap/` was dismantled into
+  `docs/design/`, `docs/gaps/`, `docs/plans/` and the whole set rewritten to match the source.
+  - Design: `architecture.md` now inventories the actual 7-domain / 7-reader / 7-store /
+    5-provider / 8-service layout (calendar, filings, macro, profile included).
+  - Gaps: **numbering collision fixed** — open gaps 0001/0002/0003 (calendar,
+    fundamentals, calendar-stub) collided with closed gaps 0001/0002/0003; renumbered to
+    **0010/0011/0012**. **0011 (symbol profile) closed** (yfinance implementation,
+    `261d646`); 0010 (calendar real source) and 0012 (calendar stub) stay open.
+  - Plans: new active plans **0003–0006** group the open gaps (calendar/reference,
+    content/disclosure, Rust bridge, lakehouse ingestion).
+  - Cross-repo: `vyapaar-runtime` plan 0003's gap citations updated to the new numbers.
 * Package `vyapaar_data/` with hexagonal layout:
   * `domain/`: `Split`, `Bonus`, `Dividend`, `Rights` (frozen, self-validating, `Decimal`-exact),
     `FundamentalRecord` (filing/period dates with look-ahead guard), `CoverageLedger` (gap discovery),
@@ -37,7 +48,7 @@
   `CalendarRepository`/`CalendarReader` ports, `DuckDbCalendarStore` adapter,
   `LakehouseCalendarReader` service, stubbed CSV provider (`stubbed_calendar_rows`).
   Stubbed data is a stopgap pending an external vendor decision — tracked by
-  `docs/gaps/0003-calendar-stubbed-data.md`. Tests in `tests/test_calendar.py`.
+  `docs/gaps/0012-calendar-stubbed-data.md`. Tests in `tests/test_calendar.py`.
 * **Gap 0002 (symbol profile) implemented with yfinance** — `SymbolProfile` domain,
   `ProfileRepository`/`ProfileReader` ports, `DuckDbProfileStore` adapter,
   `LakehouseProfileReader` service, yfinance provider (`fetch_symbol_profiles`,
@@ -50,7 +61,7 @@
   `DuckDbCalendarStore` adapter (`vyapaar_data/adapters/duckdb_store.py`);
   `CalendarReader` port + `LakehouseCalendarReader` service
   (`vyapaar_data/service/calendar_reader.py`). Data is stubbed/hardcoded pending
-  an external vendor decision (see docs/gaps/0003-calendar-stubbed-data.md).
+  an external vendor decision (see docs/gaps/0012-calendar-stubbed-data.md).
 - **Symbol profile ingestion** (gap 0002): `SymbolProfile` domain value object
   (`vyapaar_data/domain/profile.py`); `ProfileRow`/`fetch_symbol_profiles` yfinance
   provider (`vyapaar_data/providers/profile.py`); `ProfileRepository` port +
