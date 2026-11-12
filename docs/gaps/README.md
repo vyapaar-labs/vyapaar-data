@@ -30,8 +30,6 @@ overhaul.
 
 ## Open gaps
 
-| # | Title | Area | Plan |
-|---|-------|------|------|
 | [0004](0004-catalog-seeded-from-honba-kao-ad-hoc-copy.md) | `data/catalog/` NSE daily bars seeded via ad-hoc copy from honba-kao, not vyapaar-data's own ingestion pipeline | `data/catalog/1D`, `data/catalog/5M` | [0006](../plans/0006-lakehouse-ingestion-completeness.md) |
 | [0005](0005-block-bulk-deal-disclosure-ingestion.md) | Block & bulk deal disclosure ingestion — no data source, port, or reader exists | `vyapaar_data` (reference) | [0004](../plans/0004-content-and-disclosure-ingestion.md) |
 | [0006](0006-news-ingestion.md) | News article ingestion — no data source, port, or reader exists (blocks chat `news_search` tool) | `vyapaar_data` (reference) | [0004](../plans/0004-content-and-disclosure-ingestion.md) |
@@ -40,6 +38,8 @@ overhaul.
 | [0009](0009-corporate-actions-ingestion.md) | Corporate-actions DuckDB store has no automatic ingestion — population is manual/test-seeded today | `vyapaar_data` (corporate actions) | [0006](../plans/0006-lakehouse-ingestion-completeness.md) |
 | [0010](0010-economic-calendar-ingestion.md) | Economic/earnings/dividends/splits/IPO calendar ingestion — reader/port/store implemented, real vendor source not selected | `vyapaar_data` (calendar) | [0003](../plans/0003-calendar-and-reference-data.md) |
 | [0012](0012-calendar-stubbed-data.md) | Calendar data stubbed pending external source decision | `vyapaar_data` (calendar) | [0003](../plans/0003-calendar-and-reference-data.md) |
+| [0013](0013-fii-dii-institutional-flow-ingestion.md) | FII/DII daily institutional net-flow ingestion — no data source, port, or reader exists | `vyapaar_data` (reference) | — |
+| [0014](0014-delivery-percentage-ingestion.md) | Delivery percentage / delivery-adjusted volume ingestion — no data source, port, reader, or DTO field exists | `vyapaar_data` (reference) | — |
 
 ## Closed gaps
 
